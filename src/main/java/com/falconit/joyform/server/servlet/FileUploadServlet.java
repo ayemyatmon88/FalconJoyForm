@@ -29,7 +29,7 @@ import org.json.simple.parser.JSONParser;
  */
 public class FileUploadServlet extends HttpServlet {
 
-    public static final String FACE_DETECTION_URL = "http://localhost:8090/autofacecentral";
+    public static final String FACE_DETECTION_URL = "http://theburmapeople.com:8090/autofacecentral";//"http://theburmapeople.com:8090/autofacecentral/";
     public static final String UPLOAD_PATH = "/form-service";
     public static final String FILE_TYPE_DOC = "doc";
     public static final String FILE_TYPE_IMAGE = "img";

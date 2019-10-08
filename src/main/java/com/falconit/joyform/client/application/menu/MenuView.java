@@ -35,6 +35,9 @@ import gwt.material.design.client.ui.MaterialNavBar;
 import gwt.material.design.client.ui.MaterialSearch;
 import gwt.material.design.client.ui.MaterialSideNavPush;
 import com.falconit.joyform.client.ThemeManager;
+import com.falconit.joyform.client.application.form.util.Form;
+import com.falconit.joyform.client.application.form.util.FormCRUD;
+import com.falconit.joyform.client.application.profile.personal.PersonCRUD;
 import com.falconit.joyform.client.application.tasks.list.TasksListView;
 import com.falconit.joyform.client.application.util.Constants;
 import com.falconit.joyform.client.application.util.CookieHelper;
@@ -47,9 +50,14 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import gwt.material.design.client.base.viewport.Resolution;
+import gwt.material.design.client.base.viewport.ViewPort;
 import gwt.material.design.client.ui.MaterialBadge;
+import gwt.material.design.client.ui.MaterialCollapsible;
+import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
+import gwt.material.design.client.ui.html.ListItem;
 import gwt.material.design.incubator.client.language.Language;
 import gwt.material.design.incubator.client.language.LanguageSelector;
 import gwt.material.design.themes.amber.ThemeAmber;
@@ -67,6 +75,7 @@ import gwt.material.design.themes.yellow.ThemeYellow;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,14 +87,17 @@ class MenuView extends ViewWithUiHandlers<MenuUiHandlers> implements MenuPresent
 
     private List<SearchObject> listSearches = new ArrayList<>();
 
+    @UiField MaterialCollapsible mnuapps;
+    @UiField ListItem lstinbox, lstapps, lstanalytics, lstdashboard;
     @UiField MaterialHeader header;
     @UiField MaterialNavBar navBar, navBarSearch;
     @UiField MaterialSideNavPush sideNav;
     @UiField MaterialSearch txtSearch;
     @UiField MaterialComboBox<ThemeLoader.ThemeBundle> comboThemes;
     @UiField MaterialBadge badgeinbox;
-    @UiField MaterialLink account, logout;    
+    @UiField MaterialLink logout;
     @UiField LanguageSelector languageSelector;
+    @UiField MaterialImage photo;
 
     @Inject
     MenuView(Binder uiBinder) {
@@ -118,11 +130,11 @@ class MenuView extends ViewWithUiHandlers<MenuUiHandlers> implements MenuPresent
         Language zh = new Language("中文", "zh", "images/China_96342.png");
         languages.add( my );
         languages.add( en );
-        languages.add( hi );
-        languages.add( jp );
-        languages.add( kr );
-        languages.add( th );
-        languages.add( zh );
+        //languages.add( hi );
+        //languages.add( jp );
+        //languages.add( kr );
+        //languages.add( th );
+        //languages.add( zh );
         return languages;
     }
     
@@ -157,9 +169,27 @@ class MenuView extends ViewWithUiHandlers<MenuUiHandlers> implements MenuPresent
         initThemes( );
         initSearches( );
         if( CookieHelper.getMyCookie( Constants.COOKIE_USER_ID ) != null ){
-            account.setVisible( true );
+            photo.setVisible( true );
+            //String name = CookieHelper.getMyCookie( Constants.COOKIE_USER_NAME );
+            getPerson( Long.parseLong( CookieHelper.getMyCookie(Constants.COOKIE_USER_PERSON_ID) ) );
             loadNoti( );
+            loadForms( );
+        }else{
+            lstinbox.setVisible( false );
+            mnuapps.setVisible( false );
+            lstapps.setVisible( false );
+            lstanalytics.setVisible( false );
+            lstdashboard.setVisible( false );
         }
+        
+        ViewPort.when(Resolution.ALL_MOBILE).then(param1 -> {
+            languageSelector.setVisible(false);
+            comboThemes.setVisible(false);
+        }, viewPort -> {
+            languageSelector.setVisible(true);
+            comboThemes.setVisible(true );
+            return false;
+        });
     }
 
     private void initSearches() {
@@ -297,7 +327,7 @@ class MenuView extends ViewWithUiHandlers<MenuUiHandlers> implements MenuPresent
         ThemeManager.register(sideNav );
         ThemeManager.register(navBar, ThemeManager.DARKER_SHADE);
         buildThemeList();
-        ThemeManager.loadTheme( ThemeGrey.INSTANCE );
+        //ThemeManager.loadTheme( ThemeGrey.INSTANCE );
         
         
         comboThemes.setSingleValue(ThemeManager.getBundle());
@@ -351,8 +381,9 @@ class MenuView extends ViewWithUiHandlers<MenuUiHandlers> implements MenuPresent
                 JSONObject jsonOnlineUser = JSONParser.parseStrict( result ).isObject();
                 JSONArray tasks = jsonOnlineUser.get("task-summary").isArray();
                 if( tasks == null || tasks.size() == 0 ){
-                    
+                    lstdashboard.setVisible( false );
                 }else{
+                    //lstdashboard.setVisible( true );
                     int notiCount = 0;
                     for( int i=0; i < tasks.size(); i++){
                         JSONObject task = tasks.get(i).isObject();
@@ -410,4 +441,90 @@ class MenuView extends ViewWithUiHandlers<MenuUiHandlers> implements MenuPresent
         //helper.query( Constants.containerId, "355");
     }
     
+        
+    private void getPerson( long customerId ){
+        MaterialLoader.loading( true );
+        PersonCRUD crud = new PersonCRUD();
+        crud.setListener(new PersonCRUD.CRUDListener(){
+            @Override
+            public void success(String result) {
+                //Window.alert( "Result = " + result );
+            }
+
+            @Override
+            public void fail(String message) {
+                MaterialLoader.loading( false );
+                Window.alert( "Result = " + message );
+            }
+
+            @Override
+            public void fqdn(Map<String, Object[]> maps) {}
+
+            @Override
+            public void success(Map<String, Object[]> result) {
+                MaterialLoader.loading( false );
+                //personMaps = result;
+                Object[] first = result.get("firstname");
+                Object[] middle = result.get("middlename");
+                Object[] last = result.get("lastname");
+                
+                StringBuilder sb = new StringBuilder();
+                sb.append( first[1]!=null ? first[1].toString() : "" );
+                sb.append(middle[1]!=null ? " " + middle[1].toString() : "" );
+                sb.append(last[1]!=null ? " " + last[1].toString() : "" );
+                //txtname.setTitle("Welcome "+sb.toString());
+                photo.setTooltip("Welcome "+sb.toString());
+                
+                Object[] photoValue = result.get("photo");
+                if( photoValue[1] != null && !photoValue[1].toString().isEmpty()){
+                    photo.setUrl( photoValue[1].toString() );
+                }else{
+                    photo.setUrl( "profileimage?char=" + sb.toString().toUpperCase().charAt(0) );
+                    //String firstName = result.get("firstname")[1].toString();
+                    //account.setText( "Welcome " + (firstName.contains("@") ? firstName.split("@")[0] : firstName) );
+                }
+            }
+
+            @Override
+            public void success(List<Map<String, Object[]>> result) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        
+        crud.get( customerId );
+    }
+    
+        
+    private void loadForms( ){
+        
+        FormCRUD crud = new FormCRUD();
+        crud.setListener( new FormCRUD.CRUDListener(){
+            @Override
+            public void success(String result) {
+            }
+
+            @Override
+            public void success(Form result) {
+                
+            }
+
+            @Override
+            public void success( List<Form> result ) {
+                if( result.isEmpty( ) ){
+                    mnuapps.setVisible( false );
+                    lstanalytics.setVisible( false );
+                }else
+                    lstdashboard.setVisible( false );
+            }
+
+            @Override
+            public void fail(String message) {
+            }
+
+            @Override
+            public void fqdn( Map<String, Object[]> maps ) { }
+        });
+        String userId = CookieHelper.getMyCookie( Constants.COOKIE_USER_ID );
+        crud.getBy( Long.parseLong( userId ) );
+    }
 }

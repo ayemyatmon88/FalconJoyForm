@@ -5,7 +5,6 @@ package com.falconit.joyform.client.application.profile.personal;
 import com.falconit.joyform.client.application.form.util.Field;
 import com.falconit.joyform.client.application.form.util.Form;
 import com.falconit.joyform.client.application.form.util.FormCRUD;
-import com.falconit.joyform.client.application.form.util.WidgetGenerator;
 import com.falconit.joyform.client.application.util.Constants;
 import com.falconit.joyform.client.application.util.CookieHelper;
 import com.falconit.joyform.client.place.NameTokens;
@@ -28,7 +27,6 @@ import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialCollapsibleBody;
 import gwt.material.design.client.ui.MaterialCollapsibleHeader;
 import gwt.material.design.client.ui.MaterialCollapsibleItem;
-import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
@@ -105,6 +103,7 @@ public class PersonalView extends NavigatedView implements PersonalPresenter.MyV
         if( CookieHelper.getMyCookie(Constants.COOKIE_USER_ID) == null ){
             History.newItem( NameTokens.login );
         }else{
+            //Window.alert("ID="+Constants.COOKIE_USER_PERSON_ID);
             getPerson( Long.parseLong( CookieHelper.getMyCookie(Constants.COOKIE_USER_PERSON_ID) ) );
             
         }

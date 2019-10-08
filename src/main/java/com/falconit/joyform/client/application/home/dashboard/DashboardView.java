@@ -40,7 +40,6 @@ import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
-import gwt.material.design.client.ui.MaterialRow;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -56,12 +55,14 @@ public class DashboardView extends NavigatedView implements DashboardPresenter.M
     //@UiField
     //MaterialRow appsholder;
     
+    @UiField MaterialColumn colApps, colWorkflow, colInvite;
     @UiField
     MaterialLabel txtapps, txtworkflow, txtform, txtprogress, txtcompleted;
     
     private java.util.List<Object[]> lstProjects, lstProcesses;
     private List<Form> lstForms;
     private List<java.util.Map<String, Object[]>> lstTasks = new ArrayList<>();
+    String roles = "User";
             
     @Inject
     DashboardView(Binder uiBinder) {
@@ -78,6 +79,12 @@ public class DashboardView extends NavigatedView implements DashboardPresenter.M
         loadNoti();
         //processMappings();
         //processVariables();
+        
+        roles =CookieHelper.getMyCookie( Constants.COOKIE_USER_ROLES );
+        if( !roles.equals("Admin")){
+            colApps.setVisible(false);
+            colWorkflow.setVisible(false);
+        }
     }
 
     private void loadProjects( ){
@@ -146,6 +153,10 @@ public class DashboardView extends NavigatedView implements DashboardPresenter.M
                 if( !result.isEmpty( ) ){
                     lstForms = result;
                     txtform.setText( lstForms.size( ) + " active forms" );
+                }else{
+                    if( !roles.equals("Admin")){
+                        colInvite.setVisible(false);
+                    }
                 }
             }
 

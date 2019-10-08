@@ -139,7 +139,7 @@ public class RegistrationView extends ViewImpl implements RegistrationPresenter.
                 
                 JSONObject jsonOnlineUser = JSONParser.parseStrict( result ).isObject();
                 
-                Window.alert(jsonOnlineUser.toString());
+                //Window.alert(jsonOnlineUser.toString());
                 
                 String message = jsonOnlineUser.get("message").isString().stringValue();
                 if( message.equalsIgnoreCase("Success")){
@@ -216,7 +216,7 @@ public class RegistrationView extends ViewImpl implements RegistrationPresenter.
             public void success( String result ) {
                 
                 JSONObject jsonOnlineUser = JSONParser.parseStrict( result ).isObject();
-                Window.alert(jsonOnlineUser.toString());
+                //Window.alert(jsonOnlineUser.toString());
                 String message = jsonOnlineUser.get("message").isString().stringValue();
                 if( message.equalsIgnoreCase("Success")){
                     JSONObject users = jsonOnlineUser.get("object").isObject();
@@ -224,7 +224,7 @@ public class RegistrationView extends ViewImpl implements RegistrationPresenter.
                     try {
                         userMap = new ObjectConverter().fromJSON( user, false, false);
                         String id = userMap.get("id")[1].toString();
-                        Window.alert("Customer id=" + id);
+                        //Window.alert("Customer id=" + id);
                         login( id );
                         CookieHelper.setMyCookie( "cid", id );
                     

@@ -15,6 +15,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
+import gwt.material.design.addins.client.emptystate.MaterialEmptyState;
 import gwt.material.design.client.constants.Color;
 import gwt.material.design.client.constants.IconPosition;
 import gwt.material.design.client.constants.IconType;
@@ -41,7 +42,8 @@ public class PrivateAppsView extends NavigatedView implements PrivateAppsPresent
     }
 
     @UiField
-    MaterialRow appsholder;
+    MaterialRow appsholder, empty;
+    @UiField MaterialEmptyState emptyState;
 
     
     private List<java.util.Map<String, Object[]>> lstTasks = new ArrayList<>();
@@ -56,11 +58,18 @@ public class PrivateAppsView extends NavigatedView implements PrivateAppsPresent
             Window.Location.reload( );
         }else
             loadForms();
+        
+        emptyState.addClickHandler(handler ->{
+            Window.Location.assign("#myapps");
+            Window.Location.reload( );
+        });
     }
 
         
     private void loadForms( ){
          MaterialLoader.loading( true );
+         empty.setVisible(false);
+         
         FormCRUD crud = new FormCRUD();
         crud.setListener( new FormCRUD.CRUDListener(){
             @Override
@@ -79,9 +88,11 @@ public class PrivateAppsView extends NavigatedView implements PrivateAppsPresent
                     for( Form form : result ){
                         createProcess ( form );
                     }
-                    
+                    empty.setVisible(false);
                     MaterialLoader.loading( false );
                 }else{
+                    empty.setVisible( true );
+                    appsholder.setVisible(false);
                     MaterialLoader.loading( false );
                 }
             }
@@ -125,11 +136,26 @@ public class PrivateAppsView extends NavigatedView implements PrivateAppsPresent
             card.add( content );
             //content.setTextColor(Color.WHITE);
             
-            MaterialCardTitle title = new MaterialCardTitle();
+            String shareLink = 
+                "?container=" + form.getContainer()
+                + "&process=" + form.getProcess()
+                + "&title=" + form.getProcess()
+                + "&taskName=" + Form.TASK_NAME_START_UP
+                + "&display=" + TaskDisplayView.DISPLAY_START_UP
+                + "&ownerId=" + form.getOwner( )
+                + "&owner=" + CookieHelper.getMyCookie( Constants.COOKIE_USER_NAME )
+                + "#taskdisplay";
+                        
+            MaterialCardTitle title = new MaterialCardTitle( );
             content.add( title );
-            title.setIconType( IconType.APPS );
+            title.setIconType( IconType.OPEN_IN_NEW );
             title.setIconPosition( IconPosition.RIGHT );
             title.setText( form.getProcess().replace("-", " ") );
+            title.addClickHandler(handler ->{
+                Window.alert("Title click");
+                //Window.Location.assign( GWT.getHostPageBaseURL() + shareLink );
+                //Window.Location.reload( );
+            });
             
             try{
                 MaterialLabel label = new MaterialLabel( );
@@ -141,7 +167,7 @@ public class PrivateAppsView extends NavigatedView implements PrivateAppsPresent
             }catch(Exception ex){}
             
                         
-            MaterialSwitch onOff = new MaterialSwitch();
+            MaterialSwitch onOff = new MaterialSwitch( );
             onOff.setTextColor( Color.TEAL );
             onOff.setOnLabel("Share");
             onOff.setOffLabel("Only me");
@@ -149,15 +175,6 @@ public class PrivateAppsView extends NavigatedView implements PrivateAppsPresent
             onOff.setValue( (form.getStatus() == 1) );
             content.add( onOff );
             
-            String shareLink = 
-                "?container=" + form.getContainer()
-                + "&process=" + form.getProcess()
-                + "&title=" + form.getProcess()
-                + "&taskName=" + Form.TASK_NAME_START_UP
-                + "&display=" + TaskDisplayView.DISPLAY_START_UP
-                + "&ownerId=" + form.getOwner()
-                + "&owner=" + CookieHelper.getMyCookie( Constants.COOKIE_USER_NAME )
-                + "#taskdisplay";
             
             MaterialTextArea txtlink = new MaterialTextArea();
             txtlink.setText( GWT.getHostPageBaseURL() + shareLink );

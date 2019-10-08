@@ -52,16 +52,16 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
     public static final String DISPLAY_PROCESS = "process";
     public static final String DISPLAY = "display";
     
-   private String container = "";
-   private String taskId = "";
-   private String taskName = "";
-   private String process = "";
-   private String display = "";
-   private String title = "";
-   private Form form;
-   private String owner = "sysadmin@falconbreeze.com";
-   private String ownerId = "1";
-   private String auth = "true";
+    private String container = "";
+    private String taskId = "";
+    private String taskName = "";
+    private String process = "";
+    private String display = "";
+    private String title = "";
+    private Form form;
+    private String owner = "sysadmin@falconbreeze.com";
+    private String ownerId = "1";
+    private String auth = "true";
    
     @UiField
     MaterialRow comments, forwards, processing, startup;
@@ -150,6 +150,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
                 + "&ownerId=" + ownerId
                 + "&display=" + TaskDisplayView.DISPLAY_START_UP
                 + "#login" );
+            //Window.Location.reload( );
             return;
         }else if( (userId == null || userName == null) && auth.equals("false") ){
             
@@ -277,7 +278,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
                     boolean found = false;
                     if( maps.containsKey(Constants.PARENT_TASK)){
                         String task = maps.remove( Constants.PARENT_TASK )[1].toString();
-                        Window.alert("Refer task from variables="+ task );
+                        //Window.alert("Refer task from variables="+ task );
                         String userId =CookieHelper.getMyCookie( Constants.COOKIE_USER_ID );
                         found = true;
                         
@@ -358,7 +359,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
                     }
                     
                     MaterialLoader.loading( false );
-                    Window.alert( "Refer task from processes=" + referTask );
+                    //Window.alert( "Refer task from processes=" + referTask );
                     if ( !referTask.isEmpty() ){
                         getForm( container, processId, referTask, ownerId );
                     }else{
@@ -526,8 +527,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
             }
 
             @Override
-            public void success(List<Map<String, Object[]>> result) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            public void success(List<Map<String, Object[]>> result) {throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
         

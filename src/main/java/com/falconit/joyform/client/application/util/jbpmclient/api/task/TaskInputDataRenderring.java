@@ -10,10 +10,13 @@ import com.falconit.joyform.client.application.util.Constants;
 import com.falconit.joyform.shared.jsonconvert.ObjectConverter;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import gwt.material.design.client.constants.Color;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.constants.TextAlign;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
+import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTitle;
 
@@ -63,7 +66,7 @@ public class TaskInputDataRenderring {
                 
             }else if( entry.getValue()[0].toString().equals( ObjectConverter.TYPE_STRING )){
                 
-                if( entry.getValue()[1].toString().startsWith("data:image")){
+                if( entry.getValue()[1].toString().startsWith("data:image") ){
                     
                     MaterialRow sign = new MaterialRow();
                     sign.setMarginTop(10);
@@ -91,6 +94,31 @@ public class TaskInputDataRenderring {
                     
                 }else if( entry.getValue()[1].toString().startsWith("http://") 
                         || entry.getValue()[1].toString().startsWith("https://")){
+                    
+                    MaterialRow child = new MaterialRow();
+                    row.add(child);
+
+                    MaterialColumn colLabel = new MaterialColumn();
+                    child.add( colLabel );
+                    colLabel.setGrid("l4 m4 s12");
+                    MaterialLabel lbl = new MaterialLabel();
+                    lbl.setText( entry.getKey().replaceAll("_", " ") );
+                    lbl.setFontSize("0.85em");
+                    colLabel.add(lbl);
+
+                    MaterialColumn colValue = new MaterialColumn();
+                    child.add( colValue );
+                    colValue.setGrid("l6 m6 s12");
+
+                    MaterialLink lblValue = new MaterialLink();
+                    colValue.add( lblValue );
+                    lblValue.setHref( entry.getValue()[1].toString() );
+                    lblValue.setText( "Download" );
+                    lblValue.setFontWeight( Style.FontWeight.BOLD );
+                    lblValue.setIconType( IconType.ATTACHMENT );
+                    lblValue.setTextColor( Color.TEAL );
+                    lblValue.setTarget("_blank");
+                    
                     // attachment
                 }else{
                 

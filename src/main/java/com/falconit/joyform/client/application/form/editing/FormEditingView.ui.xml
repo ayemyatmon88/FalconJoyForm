@@ -42,14 +42,14 @@
                  <m:MaterialPanel width="100%">
                      <combobox:MaterialComboBox ui:field="cbocontainer" grid="l12 m12 s12" label="Project Name"/>
                      <combobox:MaterialComboBox ui:field="cboprocess" grid="l12 m12 s12" label="Process Name"/>
-                     <combobox:MaterialComboBox ui:field="cboformtype" grid="l12 m12 s12" label="Form form"/>
+                     <combobox:MaterialComboBox ui:field="cboformtype" grid="l12 m12 s12" label="Form for"/>
                      <m:MaterialTextBox ui:field="txtformName" grid="l12 m12 s12"  label="Form name" allowBlank="false" autoValidate="true"/>
                  </m:MaterialPanel>
                  <m:MaterialButton ui:field="btnContinue1" text="Continue" grid="l4" marginTop="12" backgroundColor="TEAL" textColor="WHITE" waves="DEFAULT"/>
                  <m:MaterialButton ui:field="btnPrev1" text="Cancel" grid="l4" marginTop="12" type="FLAT" waves="DEFAULT"/>
                 </ma:stepper.MaterialStep>
                 
-                <ma:stepper.MaterialStep step="2" title="Process field data" description="The datum you want to work or you need"  textColor="TEAL" marginBottom="20">
+                <ma:stepper.MaterialStep step="2" title="Process field data" description="The datum you want to work or you need"  textColor="TEAL" paddingBottom="20">
                  <m:MaterialRow width="100%" ui:field="fieldholder" border="1px solid TEAL" marginBottom="20">
                      
                  </m:MaterialRow>
@@ -57,8 +57,8 @@
                      <combobox:MaterialComboBox ui:field="cboaddfield" grid="l4" label="Add field" visible="false"/>
                      <m:MaterialAnchorButton ui:field="btnaddField" type="FLOATING" backgroundColor="TEAL" iconType="ADD_CIRCLE" waves="DEFAULT" visible="false"/>
                  </m:MaterialRow>
-                 <m:MaterialButton ui:field="btnContinue2" text="Continue" grid="l4" marginTop="12" backgroundColor="TEAL" textColor="WHITE" waves="DEFAULT"/>
-                 <m:MaterialButton ui:field="btnPrev2" text="Back" grid="l4" marginTop="12" type="FLAT" waves="DEFAULT"/>
+                 <m:MaterialButton ui:field="btnContinue2" text="Continue" grid="l4" marginTop="12" backgroundColor="TEAL" textColor="WHITE" waves="DEFAULT" marginBottom="20"/>
+                 <m:MaterialButton ui:field="btnPrev2" text="Back" grid="l4" marginTop="12" type="FLAT" waves="DEFAULT" marginBottom="20" />
                 </ma:stepper.MaterialStep>
                 
                 <ma:stepper.MaterialStep step="3" title="Design" description="Make your form design"  textColor="TEAL" marginBottom="20">
@@ -68,15 +68,15 @@
                         </m:MaterialPanel>
                     </m:MaterialRow>
                  
-                 <m:MaterialButton ui:field="btnContinue3" text="Continue" grid="l4" marginTop="12" backgroundColor="TEAL" textColor="WHITE" waves="DEFAULT"/>
-                 <m:MaterialButton ui:field="btnPrev3" text="Back" grid="l4" marginTop="12" type="FLAT" waves="DEFAULT"/>
+                 <m:MaterialButton ui:field="btnContinue3" text="Continue" grid="l4" marginTop="12" backgroundColor="TEAL" textColor="WHITE" waves="DEFAULT" marginBottom="20"/>
+                 <m:MaterialButton ui:field="btnPrev3" text="Back" grid="l4" marginTop="12" type="FLAT" waves="DEFAULT" marginBottom="20"/>
                 </ma:stepper.MaterialStep>
                 
                 <ma:stepper.MaterialStep step="4" title="Usage" description="share your form or embedded into your apps"  textColor="TEAL" marginBottom="20">
                  <m:MaterialPanel width="100%" >
                      
-                     <m:MaterialTextArea ui:field="txtshare" grid="l12 m12 s12" label="Share link" resizeRule="AUTO" />
-                     <m:MaterialTextArea ui:field="txtembedded" grid="l12 m12 s12" label="Embedded link" resizeRule="AUTO" />
+                     <m:MaterialTextArea fieldType="OUTLINED" ui:field="txtshare" grid="l12 m12 s12" label="Share link" resizeRule="AUTO" />
+                     <m:MaterialTextArea fieldType="OUTLINED" ui:field="txtembedded" grid="l12 m12 s12" label="Embedded link" resizeRule="AUTO" />
                      
                  </m:MaterialPanel>
                  <m:MaterialButton ui:field="btnContinue4" text="Finish" grid="l4" marginTop="12" backgroundColor="TEAL" textColor="WHITE" waves="DEFAULT"/>

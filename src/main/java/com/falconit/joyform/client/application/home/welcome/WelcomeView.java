@@ -71,6 +71,8 @@ public class WelcomeView extends NavigatedView implements WelcomePresenter.MyVie
                 Object[] photoValue = result.get("photo");
                 if( photoValue[1] != null && !photoValue[1].toString().isEmpty()){
                     photo.setUrl( photoValue[1].toString() );
+                }else{
+                    photo.setUrl( "profileimage?char=" + sb.toString().toUpperCase().charAt(0) );
                 }
             }
 

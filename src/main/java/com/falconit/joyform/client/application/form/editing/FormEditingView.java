@@ -26,6 +26,7 @@ import com.falconit.joyform.client.application.form.util.Form;
 import com.falconit.joyform.client.application.form.util.FormCRUD;
 import com.falconit.joyform.client.application.tasks.display.TaskDisplayView;
 import com.falconit.joyform.client.application.util.Constants;
+import static com.falconit.joyform.client.application.util.Constants.processFilter;
 import com.falconit.joyform.client.application.util.CookieHelper;
 import com.falconit.joyform.client.application.util.jbpmclient.api.ContainerManager;
 import com.falconit.joyform.client.application.util.jbpmclient.api.process.ProcessVariables;
@@ -112,6 +113,7 @@ public class FormEditingView extends ViewImpl implements FormEditingPresenter.My
     Field tmpField;
     String userId = "1";
     String paramContainer, paramProcess, paramTaskId;
+    String roles = "User";
     
     @Inject
     FormEditingView(Binder uiBinder) {
@@ -123,6 +125,7 @@ public class FormEditingView extends ViewImpl implements FormEditingPresenter.My
         }
         
         userId =CookieHelper.getMyCookie( Constants.COOKIE_USER_ID );
+        roles =CookieHelper.getMyCookie( Constants.COOKIE_USER_ROLES );
         
         String value = com.google.gwt.user.client.Window.Location.getParameter("container");
         if( value != null ){
@@ -216,6 +219,8 @@ public class FormEditingView extends ViewImpl implements FormEditingPresenter.My
         });
         //MaterialPushpin.apply( source, 300.0, 64.0 );
         source.setVisible(false);
+        
+        
     }
     
     private void tempPro( Field field ){
@@ -355,6 +360,10 @@ public class FormEditingView extends ViewImpl implements FormEditingPresenter.My
                     if( paramContainer != null ){
                         cbocontainer.setSingleValue( paramContainer, true);
                     }
+                    
+                    if( !roles.equals("Admin")){
+                        cbocontainer.setEnabled(false);
+                    }
                 }
 
                 @Override
@@ -375,8 +384,8 @@ public class FormEditingView extends ViewImpl implements FormEditingPresenter.My
                 @Override
                 public void success(Map<String, Object[]> maps) {
                     MaterialLoader.loading( false );
-                    cboprocess.clear();
-                    cboformtype.clear();
+                    cboprocess.clear( );
+                    cboformtype.clear( );
                     cboprocess.addItem("Select one");
                     for( java.util.Map.Entry<String, Object[]> entry : maps.entrySet() ){
                         lstProcesses = (java.util.List<Object[]>) entry.getValue()[1];
@@ -384,12 +393,17 @@ public class FormEditingView extends ViewImpl implements FormEditingPresenter.My
                         for( Object[] o : lstProcesses ){//container-id
                             java.util.Map<String, Object[]> map = (java.util.Map<String, Object[]>) o[1];
                             if( map.get("container-id")[1].toString().equals(cbocontainer.getSelectedValue().get(0).toString()))
-                                cboprocess.addItem( map.get("process-name")[1].toString(), map.get("process-id")[1].toString());
+                                if( !Constants.processFilter.contains( map.get("process-id")[1].toString() ))
+                                    cboprocess.addItem( map.get("process-name")[1].toString(), map.get("process-id")[1].toString());
                         }
                     }
                     
                     if( paramProcess != null ){
                         cboprocess.setSingleValue( paramProcess, true);
+                    }
+                    
+                    if( !roles.equals("Admin")){
+                        cboprocess.setEnabled( false );
                     }
                 }
 

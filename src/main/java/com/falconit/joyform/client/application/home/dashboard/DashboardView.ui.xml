@@ -32,7 +32,7 @@
     -->
         <m:MaterialRow grid="l12 m12 s12" marginTop="20">
             
-            <m:MaterialColumn grid="l4">
+            <m:MaterialColumn grid="l4" ui:field="colApps">
             <m:MaterialCard backgroundColor="GREY_LIGHTEN_3" shadow="0"> <!--  backgroundColor="BLUE_GREY_DARKEN_1" -->
              <m:MaterialCardContent> <!--  textColor="WHITE" -->
               <m:MaterialCardTitle text="Apps" iconType="APPS" iconPosition="RIGHT"/>
@@ -42,12 +42,12 @@
                  <!--
               <m:MaterialLink text="Create" iconType="CREATE" textColor="TEAL"/>
               -->
-              <m:MaterialLink text="Manage" iconType="TUNE" textColor="TEAL"/>
+              <m:MaterialLink text="Manage" iconType="TUNE" textColor="TEAL" href="http://theburmapeople.com:8080/business-central/"/>
              </m:MaterialCardAction>
             </m:MaterialCard>
            </m:MaterialColumn>
            
-           <m:MaterialColumn grid="l4">
+           <m:MaterialColumn grid="l4" ui:field="colWorkflow">
             <m:MaterialCard backgroundColor="GREY_LIGHTEN_3" shadow="0">
              <m:MaterialCardContent>
               <m:MaterialCardTitle text="Workflow" iconType="LIST" iconPosition="RIGHT"/>
@@ -57,7 +57,7 @@
                  <!--
               <m:MaterialLink text="Create" iconType="CREATE" textColor="TEAL"/>
               -->
-              <m:MaterialLink text="Manage" iconType="TUNE" textColor="TEAL"/>
+              <m:MaterialLink text="Manage" iconType="TUNE" textColor="TEAL" href="http://theburmapeople.com:8080/business-central/"/>
              </m:MaterialCardAction>
             </m:MaterialCard>
            </m:MaterialColumn>
@@ -77,7 +77,7 @@
             </m:MaterialCard>
            </m:MaterialColumn>
     
-           <m:MaterialColumn grid="l4">
+           <m:MaterialColumn grid="l4" ui:field="colInvite">
             <m:MaterialCard backgroundColor="GREY_LIGHTEN_3" shadow="0">
              <m:MaterialCardContent>
               <m:MaterialCardTitle text="Task invitation" iconType="FORWARD" iconPosition="RIGHT"/>
@@ -96,7 +96,7 @@
               <m:MaterialLabel text="12 tasks in progress" ui:field="txtprogress" />
              </m:MaterialCardContent>
              <m:MaterialCardAction>
-              <m:MaterialLink href="#tasklist" text="Open" iconType="OPEN_IN_NEW" textColor="TEAL"/>
+              <m:MaterialLink href="?show=default#tasklist" text="Open" iconType="OPEN_IN_NEW" textColor="TEAL"/>
              </m:MaterialCardAction>
             </m:MaterialCard>
            </m:MaterialColumn>

@@ -39,7 +39,7 @@ import java.util.Date;
 
 public class ThemeManager {
 
-    final static String COLOR = "color";
+    final static String COLOR = "color-joy-form";
 
     static java.util.HashMap<MaterialWidget, Integer> map = new java.util.HashMap<>();
 
@@ -140,12 +140,12 @@ public class ThemeManager {
         } else if (getColor() == Color.YELLOW) {
             return ThemeYellow.INSTANCE;
         }
-        return ThemeBlue.INSTANCE;
+        return ThemeGrey.INSTANCE;
     }
 
     public static Color getColor() {
         if (Cookies.getCookie(COLOR) == null) {
-            return Color.BLUE;
+            return Color.GREY;
         }
         return Color.fromStyleName(Cookies.getCookie(COLOR));
     }

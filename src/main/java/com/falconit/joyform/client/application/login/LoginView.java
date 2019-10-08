@@ -20,6 +20,7 @@ package com.falconit.joyform.client.application.login;
  * #L%
  */
 
+
 import com.falconit.joyform.client.application.util.Constants;
 import com.falconit.joyform.client.application.util.CookieHelper;
 import com.falconit.joyform.client.application.util.jbpmclient.HumanTaskHelper;
@@ -61,6 +62,14 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
     private EmailValidator emailValidator = new EmailValidator();
     private MobileValidator mobileValidator = new MobileValidator();
     
+    private String container = "";
+    private String taskId = "";
+    private String taskName = "";
+    private String process = "";
+    private String display = "";
+    private String title = "";
+    private String owner = "";
+    private String ownerId = "";
     
     private boolean success = true;
     @UiField
@@ -76,7 +85,11 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
     @Inject
     LoginView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
-        
+        if( CookieHelper.getMyCookie( Constants.COOKIE_USER_ID ) != null ){
+            History.newItem( NameTokens.welcome );
+            Window.Location.reload( );
+            return;
+        }
         appLoadingState.setTarget(target);
         appLoadingState.addSuccessHandler(event -> appLoadingState.reset(target));
         appLoadingState.addErrorHandler(event -> appLoadingState.reset(target));
@@ -115,6 +128,39 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
                     login( );
             }
         });
+        
+        String value = com.google.gwt.user.client.Window.Location.getParameter( "container" );
+        if( value != null ){
+            container = value;
+        }
+        String pro = com.google.gwt.user.client.Window.Location.getParameter( "process" );
+        if( pro != null ){
+            process = pro;
+        }
+        String id = com.google.gwt.user.client.Window.Location.getParameter( "taskId" );
+        if( id != null ){
+            taskId = id;
+        }
+        String n = com.google.gwt.user.client.Window.Location.getParameter( "taskName" );
+        if( n != null ){
+            taskName = n;
+        }
+        String t = com.google.gwt.user.client.Window.Location.getParameter( "title" );
+        if( t != null ){
+            title = t;
+        }
+        String d = com.google.gwt.user.client.Window.Location.getParameter( "display" );
+        if( d != null ){
+            display = d;
+        }
+        String o = com.google.gwt.user.client.Window.Location.getParameter( "owner" );
+        if( o != null ){
+            owner = o;
+        }
+        String oID = com.google.gwt.user.client.Window.Location.getParameter( "ownerId" );
+        if( oID != null ){
+            ownerId = oID;
+        }
     }
     
     @UiHandler("btnLogin")
@@ -149,18 +195,34 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
                         userMap = new ObjectConverter().fromJSON(user, false, false);
                         String name = userMap.get("username")[1].toString();
                         String id = userMap.get("id")[1].toString();
-                        String cid = userMap.get("customerId")[1].toString();
-                        String roles = userMap.get("roles")[1].toString();
+                        String cid = userMap.get("customerId")[1].toString( );
+                        String roles = userMap.get("roles")[1].toString( );
                         
-                    appLoadingState.setState( State.SUCCESS, MyLang.LANG.msg_login_success( ), "Welcome " + name );
+                        appLoadingState.setState( State.SUCCESS, MyLang.LANG.msg_login_success( ), "Welcome " + name );
+
+                        CookieHelper.setMyCookie( Constants.COOKIE_USER_NAME, name );
+                        CookieHelper.setMyCookie( Constants.COOKIE_USER_ID, id );
+                        CookieHelper.setMyCookie( Constants.COOKIE_USER_PERSON_ID, cid );//customerId
+                        CookieHelper.setMyCookie( Constants.COOKIE_USER_ROLES, roles );
+                        CookieHelper.setMyCookie( Constants.COOKIE_USER_CREDENTIAL, txtpassword.getText( ) + "" );
+
+                        
+                        if( !container.isEmpty() && !process.isEmpty() ){
+                            Window.Location.assign(
+                                "?container=" + container
+                                + "&process=" + process
+                                + "&title=" + title
+                                + "&taskName=" + taskName
+                                + "&owner=" + owner
+                                + "&ownerId=" + ownerId
+                                + "&display=" + display
+                                + "#taskdisplay" );
+                            Window.Location.reload( );
+                        }else{
+                            History.newItem( NameTokens.welcome );
+                            Window.Location.reload( );
+                        }
                     
-                    CookieHelper.setMyCookie( Constants.COOKIE_USER_NAME, name );
-                    CookieHelper.setMyCookie( Constants.COOKIE_USER_ID, id );
-                    CookieHelper.setMyCookie( Constants.COOKIE_USER_PERSON_ID, cid );//customerId
-                    CookieHelper.setMyCookie( Constants.COOKIE_USER_ROLES, roles );
-                    CookieHelper.setMyCookie( Constants.COOKIE_USER_CREDENTIAL, txtpassword.getText( ) + "" );
-                    History.newItem( NameTokens.welcome );
-                    Window.Location.reload( );
                     } catch (Exception ex) {
                         Window.alert( "Error " + ex.getMessage());
                         Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,18 +248,18 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
         else
             mobile = txtusername.getText().trim( );
         
-        users.put("email", new JSONString( email ));
-        users.put("phone", new JSONString( mobile ));
+        users.put("email", new JSONString( email ) );
+        users.put("phone", new JSONString( mobile ) );
         users.put("password", new JSONString( txtpassword.getText() ));
         
-        JSONObject user = new JSONObject();
+        JSONObject user = new JSONObject( );
         user.put("User", users);
         
-        JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject( );
         obj.put("action", new JSONString( "login" ));
         obj.put("user", user);
         
-        helper.startInstances( Constants.userProcessId, obj.toString());
+        helper.startInstances( Constants.userProcessId, obj.toString() );
         //helper.query( Constants.containerId, "355");
     }
     

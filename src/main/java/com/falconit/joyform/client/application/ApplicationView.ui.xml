@@ -93,6 +93,7 @@
     
       <m:MaterialFooterCopyright ui:field="footerCopyRight" addStyleNames="footer-copyright">
         <m:MaterialLabel ui:field="footerCopyRightLabel"/>
+        <m:MaterialLink text="Help" textColor="WHITE" />
       </m:MaterialFooterCopyright>
     </m:MaterialFooter>
 

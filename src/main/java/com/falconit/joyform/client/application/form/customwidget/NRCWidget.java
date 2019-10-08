@@ -33,7 +33,7 @@ public class NRCWidget extends MaterialRow{
         colNo.add( cboNo );
         add(colNo);
         for( int i=1; i < 15; i++)
-            cboNo.addItem("" + i, "" + i);
+            cboNo.addItem(tspNumbers[i-1], "" + i);
         cboNo.setSelectedIndex(0);
         
         MaterialColumn collbl = new MaterialColumn();
@@ -86,8 +86,11 @@ public class NRCWidget extends MaterialRow{
         txtNumber.addKeyUpHandler(new KeyUpHandler(){
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                if( txtNumber.getText().trim().length() < 6 ){
-                    //txtNumber.setErrorText("6 digits required");
+                if( txtNumber.getText().trim().length() != 6 ){
+                    txtNumber.setErrorText("6 digits required");
+                }else{
+                    txtNumber.clearErrorText();
+                    txtNumber.clearStatusText();
                 }
             }
         });
@@ -155,6 +158,7 @@ public class NRCWidget extends MaterialRow{
         return object;
     }
 
+    private String tspNumbers[] = new String[]{"၁","၂","၃","၄","၅","၆","၇","၈","၉","၁၀","၁၁","၁၂","၁၃","၁၄"};
     private java.util.Map<String, String[]> mapTSP = new java.util.HashMap<>();
     private String a1[] = new String[]{"ကတန","ကမတ","ကမန","ခတဒ","ခဖန","ခဘဒ","ဆဒန","တနန","နမန","ပကတ","ပညန","ပတအ","ပဘတ","ဗမန",
 "မကက","မကတ","မကထ","မကန","မကရ","မခဘ","မဂဒ","မစန","မညန","မထန","မဘန","မဘပ","မမန","မအန","ရကန",
