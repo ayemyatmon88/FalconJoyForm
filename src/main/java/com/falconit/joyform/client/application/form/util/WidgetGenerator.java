@@ -463,8 +463,8 @@ public class WidgetGenerator {
                 
                 //widget.setEnabled( !field.isReadOnly() );
                 
-                field.bind(widget);
-                child.add(widget);
+                field.bind( widget );
+                child.add( widget );
                 
                 if( clickListener != null && mode.equals(Form.DISPLAY_MODE_DESIGNER) ){
                     widget.addClickHandler(handler ->{
@@ -500,7 +500,7 @@ public class WidgetGenerator {
                     
                     if( field.getOrientation().equals(Field.ORIENTATION_VERTICAL)){
                         MaterialRow rRow = new MaterialRow();
-                        rRow.add(rbtn);
+                        rRow.add( rbtn );
                         widget.add( rRow );
                     }else{
                         widget.add( rbtn );

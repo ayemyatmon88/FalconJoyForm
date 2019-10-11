@@ -27,4 +27,6 @@ public interface MyLang extends Messages{
     String msg_login_success( );
     String msg_login_fail_title( );
     String msg_login_fail();
+    String heading();
+    String footer();
 }

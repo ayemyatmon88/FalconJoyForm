@@ -26,7 +26,6 @@ import com.falconit.joyform.client.application.form.util.Form;
 import com.falconit.joyform.client.application.form.util.FormCRUD;
 import com.falconit.joyform.client.application.tasks.display.TaskDisplayView;
 import com.falconit.joyform.client.application.util.Constants;
-import static com.falconit.joyform.client.application.util.Constants.processFilter;
 import com.falconit.joyform.client.application.util.CookieHelper;
 import com.falconit.joyform.client.application.util.jbpmclient.api.ContainerManager;
 import com.falconit.joyform.client.application.util.jbpmclient.api.process.ProcessVariables;

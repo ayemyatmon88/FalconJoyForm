@@ -30,6 +30,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import gwt.material.design.client.ui.*;
 import com.falconit.joyform.client.ThemeManager;
 import com.falconit.joyform.client.place.NameTokens;
+import com.falconit.joyform.client.resources.MyLang;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -147,7 +148,7 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
 */
         //ThemeManager.register(titlePanel);
 
-        footerCopyRightLabel.setText("© " + getFormat("yyyy").format(new Date()) + " Copyright falconIT" );
+        footerCopyRightLabel.setText("© " + getFormat("yyyy").format(new Date())+ " " + MyLang.LANG.footer( ) );
     }
 
 /*    

@@ -279,7 +279,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
                     if( maps.containsKey(Constants.PARENT_TASK)){
                         String task = maps.remove( Constants.PARENT_TASK )[1].toString();
                         //Window.alert("Refer task from variables="+ task );
-                        String userId =CookieHelper.getMyCookie( Constants.COOKIE_USER_ID );
+                        //String userId =CookieHelper.getMyCookie( Constants.COOKIE_USER_ID );
                         found = true;
                         
                         for( java.util.Map.Entry<String, Object[]> entry : maps.entrySet() ){
@@ -294,7 +294,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
                             }
                         }
                         
-                        getForm( container, process, task, userId );
+                        getForm( container, process, task, ownerId );
                     }else {
                         for( java.util.Map.Entry<String, Object[]> entry : maps.entrySet() ){
                             if( entry.getValue()[0].toString( ).equals( ObjectConverter.TYPE_OBJECT ) ){
@@ -540,7 +540,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
         try {
             String body = form.getOutputDataForTask().toString();
             //txtbrief.setText( body );
-            //Window.alert( form.getOutputDataForTask().toString() );
+            //Window.alert( body );
             TaskStarter start = new TaskStarter();
             start.setListener(new TaskStarter.TaskStarterListener(){
                 @Override
@@ -575,6 +575,7 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
             String body = "{}";
             if( form != null ){
                 body = form.getOutputDataForTask().toString();
+                //Window.alert( body );
                 //txtbrief.setText( body );
             }
             //Window.alert( form.getOutputDataForTask().toString() );
@@ -604,6 +605,9 @@ public class TaskDisplayView extends NavigatedView implements TaskDisplayPresent
     }    
          
     private void solveFQDN( String fqdn ){
+        
+        if( !fqdn.contains(".") ) return;
+        
         MaterialLoader.loading( true );
         FormCRUD crud = new FormCRUD();
         crud.setListener(new FormCRUD.CRUDListener(){

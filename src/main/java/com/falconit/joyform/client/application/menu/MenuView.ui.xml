@@ -68,7 +68,7 @@
 	<m:MaterialPanel>
 		<m:MaterialHeader ui:field="header" marginTop="-56" width="100%">
 			<m:MaterialNavBar ui:field="navBar" width="100%" backgroundColor="BLUE" activates="sideBar" textColor="WHITE">
-                            <m:MaterialNavBrand paddingLeft="5" text="falconIT" />
+                            <m:MaterialNavBrand paddingLeft="5" text="{i18n.heading}" />
 				<m:MaterialLink ui:field="btnSearch" iconType="SEARCH" iconColor="WHITE" float="RIGHT" visible="false"/>
 				
                                 <m:MaterialImage ui:field="photo" visible="false" activates="dp6" url="falconIT-logo.png" marginTop="15" marginRight="15" circle="true" width="40px" height="40px" float="RIGHT"/>

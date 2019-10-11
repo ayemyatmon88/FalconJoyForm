@@ -726,12 +726,15 @@ import java.util.List;
                 }
                 
             }else if( getWidgetType().equals(Field.WIDGET_COMBO_BOX) ){
-                java.util.List value = ((MaterialComboBox) widget).getSelectedValues();
-                StringBuilder sb = new StringBuilder();
-                for( Object o : value){
-                    sb.append(sb.toString().isEmpty() ? o.toString() : "," + o.toString());
+                
+                MaterialComboBox<String> cbo = (MaterialComboBox) widget;
+                StringBuilder sb = new StringBuilder( );
+                
+                for ( int i=0; i < cbo.getSelectedValues().size(); i++){
+                    sb.append(sb.toString().isEmpty() ? cbo.getSelectedValues().get(i) : "," + cbo.getSelectedValues().get(i) );
                 }
                 return new Object[] { ObjectConverter.TYPE_STRING, sb.toString() };
+                
                 
             }else if( getWidgetType().equals(Field.WIDGET_RATING) ){
                 int value = ((MaterialRating) widget).getValue();
@@ -743,7 +746,6 @@ import java.util.List;
                 
                 for( Widget w : row.getChildrenList() ){
                     
-                    //if( w instanceof MaterialRow) continue;
                     if( w instanceof MaterialLabel) continue;
                     
                     if( w instanceof MaterialRow && 
