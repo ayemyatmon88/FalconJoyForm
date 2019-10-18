@@ -188,6 +188,10 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
                 JSONObject jsonOnlineUser = JSONParser.parseStrict( result ).isObject();
                 String message = jsonOnlineUser.get("message").isString().stringValue();
                 if( message.equalsIgnoreCase("Success")){
+                    
+                    //Window.alert(jsonOnlineUser.get("user").isObject().toString());
+                    //return;
+                    
                     JSONObject users = jsonOnlineUser.get("user").isObject();
                     JSONObject user = users.get( "com.falconit.automation.entity.User" ).isObject();
                     
@@ -227,6 +231,7 @@ public class LoginView extends ViewImpl implements LoginPresenter.MyView {
                         Window.alert( "Error " + ex.getMessage());
                         Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
                 }else{
                     appLoadingState.setState( State.ERROR, MyLang.LANG.msg_login_fail_title( ), message );
                 }
